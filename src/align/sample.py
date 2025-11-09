@@ -75,8 +75,7 @@ def adjust(what, params):
             detector.set(global_PVs, params) 
             dark_field, white_field = detector.take_dark_and_white(global_PVs, params)
             if (what == 'resolution' ):
-                # find_resolution(params, dark_field, white_field)
-                print('call find_resolution')
+                find_resolution(params, dark_field, white_field)
                 config.save_sample_params(params)
             else:
                 if(params.image_pixel_size==None):
@@ -87,8 +86,7 @@ def adjust(what, params):
                 else:
                     dark_field, white_field = detector.take_dark_and_white(global_PVs, params)
                     if (what == 'center'):
-                        # find_rotation_axis(params, dark_field, white_field)
-                        print('call find_rotation_axis')
+                        find_rotation_axis(params, dark_field, white_field)                    
                     
                     config.save_sample_params(params)
 

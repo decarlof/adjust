@@ -161,7 +161,7 @@ SECTIONS['shutter'] = {
 
 SECTIONS['detector'] = {
     'detector-prefix':{
-        'default': '2bmSP1:',
+        'default': '2bmSP2:',
         'type': str,
         'help': ''},
     'exposure-time': {
@@ -255,13 +255,15 @@ def parse_known_args(parser, subparser=False):
     # Read args from config file
     config_values = config_to_list(config_name=get_config_name())
 
-    # Merge config and CLI arguments correctly
+    # --- FIX: inject config values *after* subcommand, not before ---
+    # so that subparser-level defaults don’t override them
     if subcmd:
-        values = config_values + [subcmd] + argv[1:]
+        values = [subcmd] + config_values + argv[1:]
     else:
         values = config_values + argv
+    # ---------------------------------------------------------------
 
-    # Parse using argparse's built-in method
+    # First pass: parse using argparse's built-in method
     args, unknown = parser.parse_known_args(values)
 
     # -----------------------
@@ -425,6 +427,6 @@ def show_configs(args):
 
 
 def save_sample_params(args):
-       # update adjust.conf
+       # update align.conf
         sections = SAMPLE_PARAMS
         write(args.config, args=args, sections=sections)

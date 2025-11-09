@@ -73,6 +73,7 @@ def run_status(args):
 def run_sample_resolution(args):
     sample.adjust('resolution', args)
 
+
 def run_sample_rotation(args):
     sample.adjust('center', args)
 
@@ -117,6 +118,8 @@ def main():
     try:
         # config.show_configs(args)
         args._func(args)
+        config.save_sample_params(args)
+
     except RuntimeError as e:
         log.error(str(e))
         sys.exit(1)
