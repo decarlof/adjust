@@ -241,19 +241,82 @@ def get_config_name():
 
 def parse_known_args(parser, subparser=False):
     """
-    Parse arguments from file and then override by the ones specified on the
-    command line. Use *parser* for parsing and is *subparser* is True take into
-    account that there is a value on the command line specifying the subparser.
+    Parse arguments from file and then override them with the ones
+    specified on the command line. If *subparser* is True, detect
+    the subcommand automatically so we can inject config arguments
+    before it.
     """
-    if len(sys.argv) > 1:
-        subparser_value = [sys.argv[1]] if subparser else []
-        config_values = config_to_list(config_name=get_config_name())
-        values = subparser_value + config_values + sys.argv[1:]
-        #print(subparser_value, config_values, values)
-    else:
-        values = ""
+    import difflib
+    argv = sys.argv[1:]
 
-    return parser.parse_known_args(values)[0]
+    # Detect subcommand (first positional arg not starting with '-')
+    subcmd = argv[0] if (subparser and len(argv) > 0 and not argv[0].startswith('-')) else None
+
+    # Read args from config file
+    config_values = config_to_list(config_name=get_config_name())
+
+    # Merge config and CLI arguments correctly
+    if subcmd:
+        values = config_values + [subcmd] + argv[1:]
+    else:
+        values = config_values + argv
+
+    # Parse using argparse's built-in method
+    args, unknown = parser.parse_known_args(values)
+
+    # -----------------------
+    # Strict unknown argument detection
+    # -----------------------
+    valid_args = [f"--{k}" for section in SECTIONS.values() for k in section.keys()]
+    known_subcommands = []
+    for action in parser._actions:
+        if isinstance(action, argparse._SubParsersAction):
+            known_subcommands.extend(action.choices.keys())
+
+    real_unknowns = []
+    for u in unknown:
+        if not u.startswith("--"):
+            continue
+        if u in known_subcommands:
+            continue
+        u_clean = u.split("=")[0]
+        if u_clean not in valid_args:
+            real_unknowns.append(u)
+
+    if real_unknowns:
+        print("ERROR: Unknown argument(s):")
+        for bad in real_unknowns:
+            suggestion = difflib.get_close_matches(bad.split("=")[0], valid_args, n=1)
+            if suggestion:
+                print(f"  {bad}  (did you mean {suggestion[0]}?)")
+            else:
+                print(f"  {bad}")
+        sys.exit(1)
+
+    # -----------------------
+    # Missing value detection
+    # -----------------------
+    missing_values = []
+    required_value_flags = [
+        f"--{name}" for section in SECTIONS.values() for name, opts in section.items()
+        if opts.get("action") != "store_true" and opts.get("nargs") in (None, 1)
+    ]
+    # Only check user-supplied CLI args, not config values
+    user_args = argv[1:] if subcmd else argv
+    for i, token in enumerate(user_args):
+        if token in required_value_flags:
+            if i + 1 == len(user_args) or user_args[i + 1].startswith("--"):
+                missing_values.append(token)
+        elif any(token.startswith(flag + "=") for flag in required_value_flags):
+            continue
+
+    if missing_values:
+        print("\nERROR: Missing value(s) for argument(s):")
+        for flag in missing_values:
+            print(f"  {flag}")
+        sys.exit(2)
+
+    return args
 
 
 def config_to_list(config_name=CONFIG_FILE_NAME):
