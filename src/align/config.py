@@ -60,7 +60,7 @@ from align import log
 
 home = os.path.expanduser("~")
 LOGS_HOME = os.path.join(home, 'logs')
-CONFIG_FILE_NAME = os.path.join(home, 'align_test.conf')
+CONFIG_FILE_NAME = os.path.join(home, 'align.conf')
 
 SECTIONS = OrderedDict()
 
