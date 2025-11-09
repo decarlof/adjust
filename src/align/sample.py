@@ -80,7 +80,7 @@ def adjust(what, params):
             else:
                 if(params.image_pixel_size==None):
                     # resolution must be measured at least once  
-                    log.error('  *** Detector resolution is not determined. Please run adjust resolution first!')
+                    log.error('  *** Detector resolution is not determined. Please run align resolution first!')
                     time.sleep(2) # to avoid a calling callback function/epics.ca.ChannelAccessException 
                     exit()
                 else:
