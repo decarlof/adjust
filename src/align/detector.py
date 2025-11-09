@@ -87,7 +87,6 @@ def init(global_PVs, params):
 
 
 def set(global_PVs, params):
-
     if (params.detector_prefix == '2bmSP1:' or params.detector_prefix == '2bmSP2:'):
         log.info(' ')
         log.info('  *** setup FLIR camera')

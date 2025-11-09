@@ -58,7 +58,6 @@ from align import detector
 from align import pv
 from align import config
 from align import util
-import matplotlib.pyplot as plt
     
 
 def adjust(what, params):
@@ -76,8 +75,9 @@ def adjust(what, params):
             detector.set(global_PVs, params) 
             dark_field, white_field = detector.take_dark_and_white(global_PVs, params)
             if (what == 'resolution' ):
-                find_resolution(params, dark_field, white_field)
-                config.update_sphere(params)
+                # find_resolution(params, dark_field, white_field)
+                print('call find_resolution')
+                config.save_sample_params(params)
             else:
                 if(params.image_pixel_size==None):
                     # resolution must be measured at least once  
@@ -87,9 +87,10 @@ def adjust(what, params):
                 else:
                     dark_field, white_field = detector.take_dark_and_white(global_PVs, params)
                     if (what == 'center'):
-                        adjust_rotation(params, dark_field, white_field)
+                        # find_rotation_axis(params, dark_field, white_field)
+                        print('call find_rotation_axis')
                     
-                    config.update_sphere(params)
+                    config.save_sample_params(params)
 
     except  KeyError:
         log.error('  *** Some PV assignment failed!')
@@ -124,7 +125,7 @@ def find_resolution(params, dark_field, white_field):
     global_PVs['ImagePixelSize'].put(params.image_pixel_size, wait=True)
 
 
-def adjust_rotation(params, dark_field, white_field):
+def find_rotation_axis(params, dark_field, white_field):
 
     global_PVs = pv.init_general_PVs(params)
 

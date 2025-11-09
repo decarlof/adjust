@@ -60,8 +60,7 @@ from align import log
 
 home = os.path.expanduser("~")
 LOGS_HOME = os.path.join(home, 'logs')
-CONFIG_FILE_NAME = os.path.join(home, 'align.conf')
-TOMOPY_CONFIG_FILE_NAME = os.path.join(home, 'tomopy.conf')
+CONFIG_FILE_NAME = os.path.join(home, 'align_test.conf')
 
 SECTIONS = OrderedDict()
 
@@ -70,11 +69,6 @@ SECTIONS['general'] = {
         'default': CONFIG_FILE_NAME,
         'type': str,
         'help': "File name of configuration file",
-        'metavar': 'FILE'},
-    'tomopy-config': {
-        'default': TOMOPY_CONFIG_FILE_NAME,
-        'type': str,
-        'help': "File name of the tomopy-cli configuration file",
         'metavar': 'FILE'},
     'logs-home': {
         'default': LOGS_HOME,
@@ -167,7 +161,7 @@ SECTIONS['shutter'] = {
 
 SECTIONS['detector'] = {
     'detector-prefix':{
-        'default': '2bmSP2:',
+        'default': '2bmSP1:',
         'type': str,
         'help': ''},
     'exposure-time': {
@@ -202,44 +196,13 @@ SECTIONS['sample-motion'] = {
         'default': 'horizontal',
         'type': str,
         'help': " "},
-    'pos0-y': {
-        'default': 7,
-        'type': float,
-        'help': "stick vertical scan position 0"},
-    'pos1-y': {
-        'default': 12,
-        'type': float,
-        'help': "stick vertical scan position 1"},
         }
 
-SECTIONS['sphere'] = {
-   'rotation-axis-location': {
-        'default': None,
-        'type': float,
-        'help': "horizontal location of the rotation axis (pixels)"},
-    'rotation-axis-roll': {
-        'default': None,
-        'type': float,
-        'help': "rotation axis roll "},
-    'rotation-axis-pitch': {
-        'default': None,
-        'type': float,
-        'help': "rotation axis pitch"},
+SECTIONS['resolution'] = {
     'off-axis-position': {
         'default': 0.1,
         'type': float,
-        'help': "Off axis horizontal position of the sphere used to calculate resolution (mm)"},
-    }
-
-SECTIONS['find'] = {
-    'find-center-angle-start': {
-        'default': 10,
-        'type': float,
-        'help': "Find center angle start (deg)"},
-    'find-center-angle-end': {
-        'default': 45,
-        'type': float,
-        'help': "Find center angle end (deg)"},
+        'help': "Off axis horizontal position of the sample used to calculate resolution (mm)"},
     }
 
 SECTIONS['tomoscan'] = {
@@ -249,44 +212,6 @@ SECTIONS['tomoscan'] = {
         'help': ''},
     }
 
-SECTIONS['rotary_alignment'] = {
-    'angle-start': {
-        'default': 177,
-        'type': float,
-        'help': "Start angle for rotary stage alignment with beam (deg)"},
-    'angle-end': {
-        'default': 182,
-        'type': float,
-        'help': "End angle for rotary stage alignment with beam (deg)"},
-    'angle-step': {
-        'default': 0.1,
-        'type': float,
-        'help': "End angle for rotary stage alignment with beam (deg)"},
-    }
-
-SECTIONS['theta_alignment'] = {
-    'theta-start': {
-        'default': -1,
-        'type': float,
-        'help': "Start angle for sample theta stage alignment with beam (deg)"},
-    'theta-end': {
-        'default': 1,
-        'type': float,
-        'help': "End angle for sample theta stage alignment with beam (deg)"},
-    'theta-step': {
-        'default': 0.1,
-        'type': float,
-        'help': "End angle for sample theta stage alignment with beam (deg)"},
-    'pos0-x': {
-        'default': 0,
-        'type': float,
-        'help': "Sample X position 0 (mm)"},
-    'pos1-x': {
-        'default': 1,
-        'type': float,
-        'help': "Sample X position 1 (mm)"},
-    }
-
 SECTIONS['mctoptics'] = {
     'mctoptics-prefix':{
         'default': '2bm:MCTOptics:',
@@ -294,11 +219,9 @@ SECTIONS['mctoptics'] = {
         'help': ''},
     }
 
-SPHERE_PARAMS = ('epics-pvs', 'shutter', 'detector', 'sample-motion', 'sphere', 'find', 'tomoscan', 'rotary_alignment', 'theta_alignment', 'mctoptics')
-NICE_NAMES = ('general', 'epics-pvs', 'shutter', 'detector', 'sample-motion', 'sphere', 'find', 'tomoscan', 'rotary_alignment', 'theta_alignment', 'mctoptics')
+SAMPLE_PARAMS = ('epics-pvs', 'shutter', 'detector', 'sample-motion', 'resolution', 'tomoscan', 'mctoptics')
+NICE_NAMES = ('general', 'epics-pvs', 'shutter', 'detector', 'sample-motion', 'resolution', 'tomoscan', 'mctoptics')
 
-ROTARY_PARAMS = ('epics-pvs', 'shutter', 'detector', 'sample-motion', 'tomoscan', 'rotary_alignment', 'mctoptics')
-THETA_PARAMS = ('epics-pvs', 'shutter', 'detector', 'sample-motion', 'tomoscan', 'theta_alignment', 'mctoptics')
 
 def get_config_name():
     """Get the command line --config option."""
@@ -438,7 +361,7 @@ def show_configs(args):
     log.warning('align status end')
 
 
-def update_sphere(args):
+def save_sample_params(args):
        # update adjust.conf
-        sections = SPHERE_PARAMS
+        sections = SAMPLE_PARAMS
         write(args.config, args=args, sections=sections)

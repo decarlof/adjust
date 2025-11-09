@@ -9,7 +9,7 @@ align
 
 **align** is a command-line tool that automatically determines the detector pixel size, positions the scintillator at the lens focal plane, aligns the rotation axis tilt and pitch, and centers the rotation axis within the detector’s field of view.
 
-**align** works in combination with a 0.5 mm `tungsten sphere <https://www.vxb.com/0-5mm-Tungsten-Carbide-One-0-0197-inch-Dia-p/0-5mmtungstenballs.htm>`_ that should be mounted as a sample on top of the rotary stage, ensuring it remains within the field of view when the rotation axis is at 0° and 10°. Alternatively, a high-contrast sample such as a wooden stick can also be used effectively.
+**align** works in combination with a regular sample mounted on top of the rotary stage, ensuring it remains within the field of view when the rotation axis is at 0° and 180°. Alternatively, a high-contrast sample such as a wooden stick can also be used effectively.
 
 
 Installation
