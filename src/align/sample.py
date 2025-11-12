@@ -165,7 +165,12 @@ def find_rotation_axis(params, dark_field, white_field):
     log.info('  *** Move rotation axis to middle?')
     if(params.ask):
         if util.yes_or_no('   *** Yes or No'):                
-            global_PVs["SampleX"].put(global_PVs["SampleX"].get()+shift0*params.image_pixel_size/1000, wait=True, timeout=600.0)            
+            global_PVs["SampleX"].put(global_PVs["SampleX"].get()+shift0*params.image_pixel_size/1000, wait=True, timeout=600.0) 
+            global_PVs["SampleXSet"].put(1, wait=True)
+            time.sleep(.2) 
+            global_PVs["SampleX"].put(0, wait=True) 
+            time.sleep(.2) 
+            global_PVs["SampleXSet"].put(0, wait=True) 
         else:
             log.warning(' No motion ')
             exit()
