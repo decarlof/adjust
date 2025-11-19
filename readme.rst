@@ -226,41 +226,40 @@ Beamline customization
 To run **align** on a different beamline you need to change the EPICS pv names associated to your instrument. This can be done at run time by setting::
 
     --focus-pv-name FOCUS_PV_NAME
-                        focus pv name (default: 2bma:m41)
-    --image-pixel-size-pv-name IMAGE_PIXEL_SIZE_PV_NAME
-                image pixel sizef pv name (default:
-                2bma:TomoScan:ImagePixelSize)
+                          focus motor pv name (default: 2bmb:m4)
     --rotation-pv-name ROTATION_PV_NAME
-                rotation pv name (default: 2bma:m82)
+                          sample rotation motor pv name (default: 2bmb:m102)
+    --sample-lamino-pv-name SAMPLE_LAMINO_PV_NAME
+                          sample lamino motor pv name (default: 2bmb:m49)
     --sample-pitch-pv-name SAMPLE_PITCH_PV_NAME
-                sample pitch pv name (default: 2bma:m50)
+                          sample pitch motor pv name (default: 2bmHXP:m5)
     --sample-roll-pv-name SAMPLE_ROLL_PV_NAME
-                sample roll pv name (default: 2bma:m51)
-    --sample-x-top-pv-name sample_x_top_pv_name
-                sample x center pv name (default: 2bmS1:m2)
+                          sample roll motor pv name (default: 2bmHXP:m4)
+    --sample-theta-pv-name SAMPLE_THETA_PV_NAME
+                          sample theta motor pv name (default: 2bmHXP:m6)
     --sample-x-pv-name SAMPLE_X_PV_NAME
-                sample x pv name (default: 2bma:m49)
+                          sample x motor pv name (default: 2bmHXP:m1)
+    --sample-x-top-pv-name SAMPLE_X_TOP_PV_NAME
+                          sample x center motor pv name (default: 2bmb:m17)
     --sample-y-pv-name SAMPLE_Y_PV_NAME
-                sample y pv name (default: 2bma:m20)
-    --sample-z-top-pv-name sample_z_top_pv_name
-                sample z center pv name (default: 2bmS1:m1)
+                          sample y motor pv name (default: 2bmHXP:m3)
+    --sample-z-top-pv-name SAMPLE_Z_TOP_PV_NAME
+                          sample z center rmotor pv name (default: 2bmb:m18)
     --shutter-close-pv-name SHUTTER_CLOSE_PV_NAME
-                shutter close pv name (default: 2bma:A_shutter:close)
+                          shutter close pv name (default: 2bma:B_shutter:close)
     --shutter-open-pv-name SHUTTER_OPEN_PV_NAME
-                shutter open pv name (default: 2bma:A_shutter:open)
+                          shutter open pv name (default: 2bma:B_shutter:open)
     --shutter-status-pv-name SHUTTER_STATUS_PV_NAME
-                shutter status pv name (default:
-            PA:02BM:STA_A_FES_OPEN_PL)
+                          shutter status pv name (default: PA:02BM:STA_B_SBS_OPEN_PL)
     --shutter-close-value SHUTTER_CLOSE_VALUE
-                value to set the shutter-close-pv-name to close the
-                shutter (default: 1)
+                          value to set the shutter-close-pv-name to close the shutter (default: 1)
     --shutter-open-value SHUTTER_OPEN_VALUE
-                value to set the shutter-open-pv-name to open the
-                shutter (default: 1)
+                          value to set the shutter-open-pv-name to open the shutter (default: 1)
     --shutter-status-close-value SHUTTER_STATUS_CLOSE_VALUE
-                shutter close status value (default: 0)
+                          shutter close status value (default: 0)
     --shutter-status-open-value SHUTTER_STATUS_OPEN_VALUE
-                shutter open status value (default: 1)
+                          shutter open status value (default: 1)
     --detector-prefix DETECTOR_PREFIX
+
 
 or by changing the default pv_name values in the align/config.py file.
