@@ -2,7 +2,7 @@
 align
 =====
 
-.. image:: tomo_refs.png 
+.. image:: docs/img/tomo_refs.png 
    :width: 480px
    :align: center
    :alt: tomo_user
@@ -196,6 +196,19 @@ If there is a difference in the measured rotation axis position between the two 
 To list of all available options::
 
     $ align  -h
+    usage: align [-h] [--config FILE] [--version]  ...
+
+    options:
+      -h, --help     show this help message and exit
+      --config FILE  File name of configuration file
+      --version      show program's version number and exit
+
+    Commands:
+      
+        init         Create configuration file
+        status       Show the align cli status
+        resolution   Find the image resolution
+        rotation     Align rotation axis
 
 
 Configuration File
