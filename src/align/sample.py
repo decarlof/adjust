@@ -84,7 +84,6 @@ def adjust(what, params):
                     time.sleep(2) # to avoid a calling callback function/epics.ca.ChannelAccessException 
                     exit()
                 else:
-                    dark_field, white_field = detector.take_dark_and_white(global_PVs, params)
                     if (what == 'center'):
                         find_rotation_axis(params, dark_field, white_field)                    
                     
